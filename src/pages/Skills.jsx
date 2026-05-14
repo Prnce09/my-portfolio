@@ -1,0 +1,214 @@
+import Navbar from "../components/Navbar";
+import MouseGlow from "../components/MouseGlow";
+
+import { motion } from "framer-motion";
+
+const languages = [
+  "JavaScript",
+  "C++",
+  "HTML",
+  "CSS",
+];
+
+const technologies = [
+  "React JS",
+  "Node JS",
+  "Express JS",
+  "MongoDB",
+  "Tailwind CSS",
+  "Three.js",
+  "Framer Motion",
+];
+
+const tools = [
+  "Git",
+  "GitHub",
+  "VS Code",
+  "Postman",
+];
+
+const mainSkills = [
+  {
+    name: "React JS",
+    level: "90%",
+  },
+
+  {
+    name: "Express JS",
+    level: "75%",
+  },
+
+  {
+    name: "Node JS",
+    level: "80%",
+  },
+
+  {
+    name: "MongoDB",
+    level: "70%",
+  },
+];
+
+export default function Skills() {
+
+  return (
+    <div className="min-h-screen bg-black text-white overflow-hidden relative">
+
+      <Navbar />
+
+      <MouseGlow />
+
+      {/* Glow */}
+      <div className="absolute top-40 left-0 w-[400px] h-[400px] bg-cyan-500/20 blur-3xl rounded-full" />
+
+      <div className="max-w-7xl mx-auto px-6 pt-40 pb-20 relative z-10">
+
+        {/* Heading */}
+        <motion.h1
+          initial={{ opacity: 0, y: 80 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+          className="text-6xl md:text-7xl font-black mb-20"
+        >
+          MY
+          <span className="text-cyan-400"> SKILLS</span>
+        </motion.h1>
+
+        {/* LANGUAGES */}
+        <motion.div
+          initial={{ opacity: 0, y: 60 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+          className="mb-16"
+        >
+
+          <h2 className="text-4xl font-bold mb-8 text-cyan-400">
+            Languages
+          </h2>
+
+          <div className="flex flex-wrap gap-5">
+
+            {languages.map((lang, index) => (
+              <div
+                key={index}
+                className="px-6 py-4 rounded-2xl border border-cyan-400/20 bg-cyan-500/10 backdrop-blur-xl hover:scale-105 hover:border-cyan-400 transition duration-300"
+              >
+                {lang}
+              </div>
+            ))}
+
+          </div>
+
+        </motion.div>
+
+        {/* TECHNOLOGIES */}
+        <motion.div
+          initial={{ opacity: 0, y: 60 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.2 }}
+          className="mb-16"
+        >
+
+          <h2 className="text-4xl font-bold mb-8 text-cyan-400">
+            Technologies
+          </h2>
+
+          <div className="flex flex-wrap gap-5">
+
+            {technologies.map((tech, index) => (
+              <div
+                key={index}
+                className="px-6 py-4 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl hover:border-cyan-400 hover:scale-105 transition duration-300"
+              >
+                {tech}
+              </div>
+            ))}
+
+          </div>
+
+        </motion.div>
+
+        {/* TOOLS */}
+        <motion.div
+          initial={{ opacity: 0, y: 60 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.4 }}
+          className="mb-20"
+        >
+
+          <h2 className="text-4xl font-bold mb-8 text-cyan-400">
+            Tools
+          </h2>
+
+          <div className="flex flex-wrap gap-5">
+
+            {tools.map((tool, index) => (
+              <div
+                key={index}
+                className="px-6 py-4 rounded-2xl border border-purple-400/20 bg-purple-500/10 backdrop-blur-xl hover:border-purple-400 hover:scale-105 transition duration-300"
+              >
+                {tool}
+              </div>
+            ))}
+
+          </div>
+
+        </motion.div>
+
+        {/* MAIN SKILLS */}
+        <motion.div
+          initial={{ opacity: 0, y: 60 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.6 }}
+        >
+
+          <h2 className="text-4xl font-bold mb-10 text-cyan-400">
+            Main Skills
+          </h2>
+
+          <div className="grid md:grid-cols-2 gap-10">
+
+            {mainSkills.map((skill, index) => (
+
+              <div
+                key={index}
+                className="p-8 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl hover:border-cyan-400/40 transition duration-300"
+              >
+
+                {/* Top */}
+                <div className="flex items-center justify-between mb-4">
+
+                  <h2 className="text-2xl font-bold">
+                    {skill.name}
+                  </h2>
+
+                  <span className="text-cyan-400 font-bold">
+                    {skill.level}
+                  </span>
+
+                </div>
+
+                {/* Progress */}
+                <div className="w-full h-4 bg-zinc-800 rounded-full overflow-hidden">
+
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: skill.level }}
+                    transition={{ duration: 1.5 }}
+                    className="h-full bg-cyan-400 rounded-full shadow-lg shadow-cyan-500/50"
+                  />
+
+                </div>
+
+              </div>
+
+            ))}
+
+          </div>
+
+        </motion.div>
+
+      </div>
+    </div>
+  );
+}
