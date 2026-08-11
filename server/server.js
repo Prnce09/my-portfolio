@@ -16,7 +16,7 @@ const ai = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY,
 });
 
-const PORT = 5001;
+const PORT = process.env.PORT || 5001;
 
 // Test route
 app.get("/", (req, res) => {
