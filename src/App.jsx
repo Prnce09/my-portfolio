@@ -15,6 +15,9 @@ import {
   useState,
 } from "react";
 
+import Chatbot from "./components/Chatbot";
+import MusicPlayer from "./components/MusicPlayer";
+
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Skills from "./pages/Skills";
@@ -139,6 +142,10 @@ export default function App() {
     <BrowserRouter>
 
       <AnimatedRoutes />
+
+      <Chatbot />
+
+      <MusicPlayer />
 
     </BrowserRouter>
   );
