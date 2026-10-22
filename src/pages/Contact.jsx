@@ -1,393 +1,332 @@
-import Navbar from "../components/Navbar";
-import MouseGlow from "../components/MouseGlow";
-import { motion } from "framer-motion";
-import emailjs from "@emailjs/browser";
-import { useRef } from "react";
 
+import { useRef, useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
+import emailjs from "@emailjs/browser";
 import {
   FaGithub,
   FaLinkedin,
   FaInstagram,
+  FaEnvelope,
 } from "react-icons/fa";
 
+import Navbar from "../components/Navbar";
+import MouseGlow from "../components/MouseGlow";
+
+const socialLinks = [
+  {
+    name: "GitHub",
+    url: "https://github.com/Prnce09",
+    Icon: FaGithub,
+  },
+  {
+    name: "LinkedIn",
+    url: "https://linkedin.com/in/prince-yadav-a2b7b7365",
+    Icon: FaLinkedin,
+  },
+  {
+    name: "Instagram",
+    url: "https://instagram.com/sr_krtz",
+    Icon: FaInstagram,
+  },
+];
+
 export default function Contact() {
-  const form = useRef();
+  const formRef = useRef(null);
+  const submittingRef = useRef(false);
 
-  const sendEmail = (e) => {
-    e.preventDefault();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [status, setStatus] = useState({
+    type: "",
+    message: "",
+  });
 
-    emailjs
-      .sendForm(
+  const shouldReduceMotion = useReducedMotion();
+
+  const animation = shouldReduceMotion
+    ? {}
+    : {
+        initial: { opacity: 0, y: 25 },
+        animate: { opacity: 1, y: 0 },
+        transition: { duration: 0.6, ease: "easeOut" },
+      };
+
+  const sendEmail = async (event) => {
+    event.preventDefault();
+
+    if (submittingRef.current || !formRef.current) {
+      return;
+    }
+
+    submittingRef.current = true;
+    setIsSubmitting(true);
+    setStatus({ type: "", message: "" });
+
+    try {
+      await emailjs.sendForm(
         "service_1d1rwfk",
         "template_bd4hu5u",
-        form.current,
+        formRef.current,
         "DkRBL1coUCfuUjwZs"
-      )
-      .then(
-        () => {
-          alert("Message Sent Successfully");
-          e.target.reset();
-        },
-        () => {
-          alert("Failed To Send Message. Try Again");
-        }
       );
+
+      formRef.current?.reset();
+
+      setStatus({
+        type: "success",
+        message: "Message sent successfully! Thank you for reaching out.",
+      });
+    } catch (error) {
+      console.error("EmailJS error:", error);
+
+      setStatus({
+        type: "error",
+        message:
+          "Failed to send your message. Please try again or email me directly.",
+      });
+    } finally {
+      submittingRef.current = false;
+      setIsSubmitting(false);
+    }
   };
 
   return (
-    <div className="min-h-screen bg-black text-white overflow-hidden relative">
-
+    <div className="relative min-h-screen overflow-hidden bg-[#050A12] text-white">
       <Navbar />
 
-      {/* Mouse Glow - Desktop Only */}
-      <div className="hidden md:block">
+      <div className="pointer-events-none hidden md:block">
         <MouseGlow />
       </div>
 
-      {/* Background Glow */}
+      {/* Background glow */}
       <div
-        className="
-          pointer-events-none
-          absolute
-          bottom-[-100px]
-          left-[-100px]
-          sm:left-0
-          w-[300px]
-          h-[300px]
-          sm:w-[500px]
-          sm:h-[500px]
-          bg-cyan-500/20
-          blur-3xl
-          rounded-full
-        "
+        aria-hidden="true"
+        className="pointer-events-none absolute -right-32 top-24 h-80 w-80 rounded-full bg-cyan-500/10 blur-3xl"
       />
 
       <div
-        className="
-          max-w-6xl
-          mx-auto
-          px-4
-          sm:px-6
-          lg:px-8
-          pt-32
-          sm:pt-40
-          pb-12
-          sm:pb-20
-          relative
-          z-10
-        "
-      >
+        aria-hidden="true"
+        className="pointer-events-none absolute -left-32 bottom-20 h-80 w-80 rounded-full bg-blue-500/10 blur-3xl"
+      />
 
-        {/* ================= HEADING ================= */}
+      <main className="relative z-10 mx-auto max-w-7xl px-5 pb-10 pt-32 sm:px-8 lg:px-10 lg:pt-36">
+        {/* Header */}
+        <motion.div {...animation} className="mb-12">
+          <div className="mb-5 flex items-center gap-3">
+            <span className="h-px w-9 bg-cyan-400" />
 
-        <motion.h1
-          initial={{ opacity: 0, y: 80 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-          className="
-            text-4xl
-            sm:text-5xl
-            md:text-6xl
-            lg:text-7xl
-            font-black
-            mb-10
-            sm:mb-16
-            leading-tight
-          "
-        >
-          CONTACT
-          <span className="text-cyan-400"> ME</span>
-        </motion.h1>
+            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-cyan-300">
+              Contact / Connect
+            </p>
+          </div>
 
-        {/* ================= CONTENT ================= */}
+          <h1 className="text-4xl font-black tracking-tight sm:text-5xl lg:text-7xl">
+            Let's{" "}
+            <span className="bg-gradient-to-r from-cyan-300 to-blue-500 bg-clip-text text-transparent">
+              Connect.
+            </span>
+          </h1>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-10 items-stretch">
+          <p className="mt-6 max-w-2xl text-base leading-8 text-zinc-400">
+            Have a project idea, job opportunity, or
+            question? Feel free to reach out.
+          </p>
+        </motion.div>
 
-          {/* ================= LEFT SIDE ================= */}
-
-          <motion.div
-            initial={{ opacity: 0, x: -80 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1 }}
-            className="flex flex-col justify-center"
+        {/* Contact layout */}
+        <div className="grid gap-6 lg:grid-cols-2 lg:gap-8">
+          {/* Left card */}
+          <motion.section
+            {...animation}
+            className="flex flex-col rounded-3xl border border-white/10 bg-white/[0.035] p-6 sm:p-8 lg:p-10"
           >
-
-            <h2
-              className="
-                text-2xl
-                sm:text-3xl
-                md:text-4xl
-                font-bold
-                mb-5
-                sm:mb-6
-                leading-tight
-              "
-            >
-              Let’s Build Something Amazing 🚀
-            </h2>
-
-            <p
-              className="
-                text-zinc-400
-                leading-7
-                sm:leading-8
-                text-base
-                sm:text-lg
-                mb-8
-                sm:mb-10
-              "
-            >
-              Feel free to contact me for projects, collaborations
-              or just to connect with me.
+            <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300">
+              Get In Touch
             </p>
 
-            {/* Social Icons */}
+            <h2 className="text-2xl font-bold sm:text-3xl">
+              Let's build something{" "}
+              <span className="text-cyan-400">
+                meaningful.
+              </span>
+            </h2>
 
-            <div className="flex gap-3 sm:gap-6">
+            <p className="mt-5 text-sm leading-8 text-zinc-400 sm:text-base">
+              I'm a full-stack developer working with
+              the MERN stack. I'm currently open to
+              full-time and internship opportunities,
+              as well as interesting collaborations.
+            </p>
 
-              {/* GitHub */}
-              <a
-                href="https://github.com/Prnce09"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="GitHub"
-                className="
-                  w-12
-                  h-12
-                  sm:w-14
-                  sm:h-14
-                  rounded-2xl
-                  border
-                  border-white/10
-                  bg-white/5
-                  backdrop-blur-xl
-                  flex
-                  items-center
-                  justify-center
-                  text-xl
-                  sm:text-2xl
-                  hover:border-cyan-400
-                  hover:text-cyan-400
-                  hover:scale-105
-                  transition
-                  duration-300
-                "
-              >
-                <FaGithub />
-              </a>
+            {/* Availability */}
+            <div className="mt-8 flex w-fit items-center gap-3 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-4 py-2.5">
+              <span className="h-2 w-2 shrink-0 rounded-full bg-emerald-400" />
 
-              {/* LinkedIn */}
-              <a
-                href="https://linkedin.com/in/prince-yadav-a2b7b7365"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="LinkedIn"
-                className="
-                  w-12
-                  h-12
-                  sm:w-14
-                  sm:h-14
-                  rounded-2xl
-                  border
-                  border-white/10
-                  bg-white/5
-                  backdrop-blur-xl
-                  flex
-                  items-center
-                  justify-center
-                  text-xl
-                  sm:text-2xl
-                  hover:border-cyan-400
-                  hover:text-cyan-400
-                  hover:scale-105
-                  transition
-                  duration-300
-                "
-              >
-                <FaLinkedin />
-              </a>
-
-              {/* Instagram */}
-              <a
-                href="https://instagram.com/sr_krtz"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Instagram"
-                className="
-                  w-12
-                  h-12
-                  sm:w-14
-                  sm:h-14
-                  rounded-2xl
-                  border
-                  border-white/10
-                  bg-white/5
-                  backdrop-blur-xl
-                  flex
-                  items-center
-                  justify-center
-                  text-xl
-                  sm:text-2xl
-                  hover:border-cyan-400
-                  hover:text-cyan-400
-                  hover:scale-105
-                  transition
-                  duration-300
-                "
-              >
-                <FaInstagram />
-              </a>
-
+              <span className="text-xs font-medium text-emerald-300 sm:text-sm">
+                Open to Full-Time & Internship Roles
+              </span>
             </div>
 
-          </motion.div>
-
-          {/* ================= RIGHT SIDE FORM ================= */}
-
-          <motion.form
-            ref={form}
-            onSubmit={sendEmail}
-            initial={{ opacity: 0, x: 80 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1 }}
-            className="
-              p-5
-              sm:p-7
-              md:p-10
-              rounded-3xl
-              border
-              border-white/10
-              bg-white/5
-              backdrop-blur-xl
-            "
-          >
-
-            {/* Name */}
-
-            <input
-              type="text"
-              name="user_name"
-              placeholder="Your Name"
-              required
-              className="
-                w-full
-                p-3.5
-                sm:p-4
-                rounded-2xl
-                bg-black/40
-                border
-                border-white/10
-                mb-4
-                sm:mb-6
-                outline-none
-                focus:border-cyan-400
-                transition
-                duration-300
-                text-sm
-                sm:text-base
-              "
-            />
-
             {/* Email */}
+            <div className="mt-10 border-t border-white/10 pt-8">
+              <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-zinc-400">
+                Email Me
+              </p>
 
-            <input
-              type="email"
-              name="user_email"
-              placeholder="Your Email"
-              required
-              className="
-                w-full
-                p-3.5
-                sm:p-4
-                rounded-2xl
-                bg-black/40
-                border
-                border-white/10
-                mb-4
-                sm:mb-6
-                outline-none
-                focus:border-cyan-400
-                transition
-                duration-300
-                text-sm
-                sm:text-base
-              "
-            />
+              <a
+                href="mailto:lukiyarykez@gmail.com"
+                className="inline-flex max-w-full items-center gap-3 text-sm text-white transition-colors hover:text-cyan-300 sm:text-base"
+              >
+                <FaEnvelope
+                  aria-hidden="true"
+                  className="shrink-0 text-cyan-400"
+                />
 
-            {/* Message */}
+                <span className="break-all">
+                  lukiyarykez@gmail.com
+                </span>
+              </a>
+            </div>
 
-            <textarea
-              name="message"
-              rows="6"
-              placeholder="Your Message"
-              required
-              className="
-                w-full
-                p-3.5
-                sm:p-4
-                rounded-2xl
-                bg-black/40
-                border
-                border-white/10
-                mb-4
-                sm:mb-6
-                outline-none
-                focus:border-cyan-400
-                transition
-                duration-300
-                resize-none
-                text-sm
-                sm:text-base
-              "
-            />
+            {/* Social links */}
+            <div className="mt-10 border-t border-white/10 pt-8">
+              <p className="mb-5 text-xs font-semibold uppercase tracking-widest text-zinc-400">
+                Connect With Me
+              </p>
 
-            {/* Button */}
+              <div className="flex flex-wrap gap-3">
+                {socialLinks.map(({ name, url, Icon }) => (
+                  <a
+                    key={name}
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Visit ${name} profile`}
+                    title={name}
+                    className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-[#0B1420] text-xl text-zinc-300 transition-colors hover:border-cyan-400/40 hover:text-cyan-300"
+                  >
+                    <Icon aria-hidden="true" />
+                  </a>
+                ))}
+              </div>
+            </div>
+          </motion.section>
 
-            <button
-              className="
-                w-full
-                py-3.5
-                sm:py-4
-                rounded-2xl
-                bg-cyan-400
-                text-black
-                font-bold
-                hover:scale-[1.02]
-                active:scale-[0.98]
-                transition
-                duration-300
-                shadow-lg
-                shadow-cyan-500/30
-              "
-              type="submit"
+          {/* Right card: Contact form */}
+          <motion.section
+            {...animation}
+            className="rounded-3xl border border-white/10 bg-white/[0.035] p-6 sm:p-8 lg:p-10"
+          >
+            <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300">
+              Send A Message
+            </p>
+
+            <h2 className="text-2xl font-bold sm:text-3xl">
+              Tell me about your{" "}
+              <span className="text-cyan-400">
+                idea.
+              </span>
+            </h2>
+
+            <p className="mt-4 text-sm leading-7 text-zinc-400">
+              Fill out the form below and I'll get
+              back to you as soon as possible.
+            </p>
+
+            <form
+              ref={formRef}
+              onSubmit={sendEmail}
+              className="mt-8 space-y-5"
             >
-              Send Message
-            </button>
+              <div>
+                <label
+                  htmlFor="contact-name"
+                  className="mb-2 block text-sm font-medium text-zinc-200"
+                >
+                  Your Name
+                </label>
 
-          </motion.form>
+                <input
+                  id="contact-name"
+                  type="text"
+                  name="user_name"
+                  placeholder="Enter your name"
+                  autoComplete="name"
+                  required
+                  disabled={isSubmitting}
+                  className="w-full rounded-xl border border-white/10 bg-[#0B1420] px-4 py-3.5 text-white outline-none transition-colors placeholder:text-zinc-500 focus:border-cyan-400 disabled:opacity-60"
+                />
+              </div>
 
+              <div>
+                <label
+                  htmlFor="contact-email"
+                  className="mb-2 block text-sm font-medium text-zinc-200"
+                >
+                  Email Address
+                </label>
+
+                <input
+                  id="contact-email"
+                  type="email"
+                  name="user_email"
+                  placeholder="you@example.com"
+                  autoComplete="email"
+                  required
+                  disabled={isSubmitting}
+                  className="w-full rounded-xl border border-white/10 bg-[#0B1420] px-4 py-3.5 text-white outline-none transition-colors placeholder:text-zinc-500 focus:border-cyan-400 disabled:opacity-60"
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="contact-message"
+                  className="mb-2 block text-sm font-medium text-zinc-200"
+                >
+                  Your Message
+                </label>
+
+                <textarea
+                  id="contact-message"
+                  name="message"
+                  rows={6}
+                  placeholder="Write your message here..."
+                  required
+                  disabled={isSubmitting}
+                  className="w-full resize-y rounded-xl border border-white/10 bg-[#0B1420] px-4 py-3.5 text-white outline-none transition-colors placeholder:text-zinc-500 focus:border-cyan-400 disabled:opacity-60"
+                />
+              </div>
+
+              {status.message && (
+                <p
+                  role={status.type === "error" ? "alert" : "status"}
+                  className={`rounded-xl border px-4 py-3 text-sm ${
+                    status.type === "success"
+                      ? "border-emerald-400/20 bg-emerald-400/10 text-emerald-300"
+                      : "border-red-400/20 bg-red-400/10 text-red-300"
+                  }`}
+                >
+                  {status.message}
+                </p>
+              )}
+
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full rounded-xl bg-cyan-400 px-6 py-3.5 font-bold text-black transition-colors hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {isSubmitting
+                  ? "Sending..."
+                  : "Send Message ↗"}
+              </button>
+            </form>
+          </motion.section>
         </div>
 
-        {/* ================= FOOTER ================= */}
-
-        <div
-          className="
-            mt-14
-            sm:mt-20
-            border-t
-            border-white/10
-            pt-6
-            sm:pt-8
-            text-center
-            text-xs
-            sm:text-sm
-            text-zinc-500
-          "
-        >
-          © 2025 Prince Yadav • All Rights Reserved
-        </div>
-
-      </div>
+        {/* Footer */}
+        <footer className="mt-16 border-t border-white/10 py-8 text-center text-sm text-zinc-500">
+          © {new Date().getFullYear()} Prince Yadav. All Rights Reserved.
+        </footer>
+      </main>
     </div>
   );
 }
