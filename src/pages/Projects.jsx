@@ -10,8 +10,8 @@ const projects = [
     description:
       "Modern social media platform built using the MERN stack with features like create post, follow/unfollow users, messaging, edit profile, and a unique challenge system where admins create challenges for users to participate, receive votes, and compete for the top position on the leaderboard.",
     tech: ["Mern Stack", "Tailwind-CSS", "ImageKit", "Clerk"],
-    live: "https://social-media-eta-wine.vercel.app/"
-  }
+    live: "https://social-media-eta-wine.vercel.app/",
+  },
 ];
 
 export default function Projects() {
@@ -20,26 +20,69 @@ export default function Projects() {
 
       <Navbar />
 
-      <MouseGlow />
+      {/* Mouse Glow - Desktop Only */}
+      <div className="hidden md:block">
+        <MouseGlow />
+      </div>
 
       {/* Glow Effect */}
-      <div className="absolute top-40 right-0 w-[400px] h-[400px] bg-cyan-500/20 blur-3xl rounded-full" />
+      <div
+        className="
+          pointer-events-none
+          absolute
+          top-40
+          right-[-100px]
+          sm:right-0
+          w-[300px]
+          h-[300px]
+          sm:w-[400px]
+          sm:h-[400px]
+          bg-cyan-500/20
+          blur-3xl
+          rounded-full
+        "
+      />
 
-      <div className="max-w-7xl mx-auto px-6 pt-40 pb-20 relative z-10">
+      <div
+        className="
+          max-w-7xl
+          mx-auto
+          px-4
+          sm:px-6
+          lg:px-8
+          pt-32
+          sm:pt-40
+          pb-16
+          sm:pb-20
+          relative
+          z-10
+        "
+      >
 
-        {/* Heading */}
+        {/* ================= HEADING ================= */}
+
         <motion.h1
           initial={{ opacity: 0, y: 80 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
-          className="text-6xl md:text-7xl font-black mb-16"
+          className="
+            text-4xl
+            sm:text-5xl
+            md:text-6xl
+            lg:text-7xl
+            font-black
+            mb-10
+            sm:mb-16
+            leading-tight
+          "
         >
           MY
           <span className="text-cyan-400"> PROJECTS</span>
         </motion.h1>
 
-        {/* Projects Grid */}
-        <div className="grid md:grid-cols-2 gap-10">
+        {/* ================= PROJECTS GRID ================= */}
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10">
 
           {projects.map((project, index) => (
             <motion.div
@@ -47,31 +90,95 @@ export default function Projects() {
               initial={{ opacity: 0, y: 80 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.2 }}
-              className="p-8 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl hover:border-cyan-400/40 transition duration-300"
+              className="
+                p-5
+                sm:p-6
+                md:p-8
+                rounded-3xl
+                border
+                border-white/10
+                bg-white/5
+                backdrop-blur-xl
+                hover:border-cyan-400/40
+                transition
+                duration-300
+              "
             >
 
-              {/* Project Title */}
-              <h2 className="text-3xl font-bold mb-4 text-cyan-400">
+              {/* ================= PROJECT TITLE ================= */}
+
+              <h2
+                className="
+                  text-xl
+                  sm:text-2xl
+                  md:text-3xl
+                  font-bold
+                  mb-4
+                  text-cyan-400
+                  break-words
+                "
+              >
                 {project.title}
               </h2>
-              {/* Project Image */}
-              <img
-                src={project.image}
-                alt={project.title}
-                className="w-full h-[220px] object-cover rounded-2xl mb-6 border border-white/10 hover:scale-[1.02] transition duration-500"
-              />
-              {/* Description */}
-              <p className="text-zinc-300 leading-relaxed mb-6">
+
+              {/* ================= PROJECT IMAGE ================= */}
+
+              <div className="overflow-hidden rounded-2xl mb-5 sm:mb-6">
+                <img
+                  src={project.image}
+                  alt={project.title}
+                  className="
+                    w-full
+                    h-[180px]
+                    sm:h-[220px]
+                    md:h-[240px]
+                    object-cover
+                    rounded-2xl
+                    border
+                    border-white/10
+                    hover:scale-[1.02]
+                    transition
+                    duration-500
+                  "
+                />
+              </div>
+
+              {/* ================= DESCRIPTION ================= */}
+
+              <p
+                className="
+                  text-zinc-300
+                  text-sm
+                  sm:text-base
+                  leading-7
+                  sm:leading-relaxed
+                  mb-5
+                  sm:mb-6
+                "
+              >
                 {project.description}
               </p>
 
-              {/* Tech Stack */}
-              <div className="flex flex-wrap gap-3 mb-8">
+              {/* ================= TECH STACK ================= */}
+
+              <div className="flex flex-wrap gap-2 sm:gap-3 mb-6 sm:mb-8">
 
                 {project.tech.map((tech, i) => (
                   <span
                     key={i}
-                    className="px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-400/20 text-sm text-cyan-300"
+                    className="
+                      px-3
+                      sm:px-4
+                      py-1.5
+                      sm:py-2
+                      rounded-full
+                      bg-cyan-500/10
+                      border
+                      border-cyan-400/20
+                      text-xs
+                      sm:text-sm
+                      text-cyan-300
+                    "
                   >
                     {tech}
                   </span>
@@ -79,14 +186,31 @@ export default function Projects() {
 
               </div>
 
-              {/* Buttons */}
-              <div className="flex gap-4">
+              {/* ================= BUTTON ================= */}
+
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
 
                 <a
                   href={project.live}
-                  className="px-6 py-3 rounded-xl border border-cyan-400 text-cyan-300 hover:bg-cyan-500/10 transition duration-300"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="
+                    w-full
+                    sm:w-auto
+                    text-center
+                    px-6
+                    py-3
+                    rounded-xl
+                    border
+                    border-cyan-400
+                    text-cyan-300
+                    hover:bg-cyan-500/10
+                    hover:scale-105
+                    transition
+                    duration-300
+                  "
                 >
-                  Live Demo
+                  Live Demo ↗
                 </a>
 
               </div>
